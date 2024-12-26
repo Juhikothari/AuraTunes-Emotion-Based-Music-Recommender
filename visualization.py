@@ -1,122 +1,198 @@
-### 1. **Confusion Matrix Plot**
-   A confusion matrix helps visualize the performance of a classification model by showing the actual vs predicted labels.
+import tkinter as tk
+from tkinter import messagebox
+import cv2
+from deepface import DeepFace
+import webbrowser
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, roc_curve, auc
+import numpy as np
 
-   ```python
-   from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
-   import matplotlib.pyplot as plt
 
-   def plot_confusion_matrix(y_true, y_pred, labels):
-       cm = confusion_matrix(y_true, y_pred, labels=labels)
-       disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=labels)
-       disp.plot(cmap=plt.cm.Blues)
-       plt.title("Confusion Matrix")
-       plt.show()
-   ```
+# Load the GoEmotions dataset
+dataset = pd.read_csv(r"C:\Users\HP\Downloads\archive\tables\emotion_words.csv")
+print(dataset.head())  # Verify the data
 
-### 2. **ROC Curve Plot**
-   The ROC (Receiver Operating Characteristic) curve is useful for evaluating classification models, especially in the case of binary classification or multi-class problems.
+# Define emotion to playlist mapping
+emotion_to_playlist = {
+    "happy": "https://open.spotify.com/playlist/5ACAHVlMPRrgnnZ8temmIh?si=LlvE8RZfS92RY-fUbqAX_g",
+    "sad": "https://open.spotify.com/playlist/0RkK2ZAXWD5HEmCJZ00i1G?si=Aa_r-9rwSZuxa1ji7z51Jw",
+    "angry": "https://open.spotify.com/playlist/5cwtgqs4L1fX8IKoQebfjJ?si=E4KoOSw1T3ShHyIhV4CabA",
+    "surprise": "https://open.spotify.com/playlist/7vatYrf39uVaZ8G2cVtEik?si=mxgDHP14RSCGMsNSLbwTNA",
+    "fear": "https://open.spotify.com/playlist/37i9dQZF1DXdpQPPZq3F7n?si=U-J5VJM6QbaWiDP9nExwnA",
+    "neutral": "https://open.spotify.com/playlist/4nqbYFYZOCospBb4miwHWy?si=2S0YqR26RJSRrmwKcvsjlQ"
+}
 
-   ```python
-   from sklearn.metrics import roc_curve, auc
-   import matplotlib.pyplot as plt
+# Function to plot confusion matrix
+def plot_confusion_matrix():
+    emotions = list(emotion_to_playlist.keys())
+    y_true = np.random.choice(emotions, 100)  # Simulated ground truth
+    y_pred = np.random.choice(emotions, 100)  # Simulated predictions
+    cm = confusion_matrix(y_true, y_pred, labels=emotions)
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=emotions)
+    disp.plot(cmap=plt.cm.Blues)
+    plt.title("Confusion Matrix")
+    plt.show()
 
-   def plot_roc_curve(y_true, y_score, labels):
-       fpr = {}
-       tpr = {}
-       roc_auc = {}
+# Function to plot ROC curve
+def plot_roc_curve():
+    emotions = list(emotion_to_playlist.keys())
+    n_classes = len(emotions)
+    y_true = np.random.randint(0, 2, (100, n_classes))  # Simulated true labels
+    y_score = np.random.rand(100, n_classes)  # Simulated scores
 
-       for i, label in enumerate(labels):
-           fpr[label], tpr[label], _ = roc_curve(y_true[:, i], y_score[:, i])
-           roc_auc[label] = auc(fpr[label], tpr[label])
+    fpr = {}
+    tpr = {}
+    roc_auc = {}
 
-       for label in labels:
-           plt.plot(fpr[label], tpr[label], label=f'{label} (AUC = {roc_auc[label]:.2f})')
+    for i, emotion in enumerate(emotions):
+        fpr[emotion], tpr[emotion], _ = roc_curve(y_true[:, i], y_score[:, i])
+        roc_auc[emotion] = auc(fpr[emotion], tpr[emotion])
 
-       plt.plot([0, 1], [0, 1], 'k--', lw=2)
-       plt.xlabel('False Positive Rate')
-       plt.ylabel('True Positive Rate')
-       plt.title('ROC Curve')
-       plt.legend(loc='lower right')
-       plt.show()
-   ```
+    for emotion in emotions:
+        plt.plot(fpr[emotion], tpr[emotion], label=f'{emotion} (AUC = {roc_auc[emotion]:.2f})')
 
-### 3. **Bar Plot for Emotion Distribution**
-   A bar plot helps visualize the distribution of different emotions.
+    plt.plot([0, 1], [0, 1], 'k--', lw=2)
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('ROC Curve')
+    plt.legend(loc='lower right')
+    plt.show()
 
-   ```python
-   import seaborn as sns
-   import matplotlib.pyplot as plt
+# Function to plot regression plot
+def plot_regression():
+    sns.regplot(x=np.random.rand(100), y=np.random.rand(100))
+    plt.title("Regression Plot")
+    plt.xlabel("X-Axis (Emotion)")
+    plt.ylabel("Y-Axis (Text)")
+    plt.show()
 
-   def plot_emotion_distribution(emotions, counts):
-       sns.barplot(x=emotions, y=counts, palette='viridis')
-       plt.title("Emotion Distribution")
-       plt.xlabel("Emotions")
-       plt.ylabel("Count")
-       plt.xticks(rotation=45)
-       plt.show()
-   ```
+# Function to plot scatter plot
+def plot_scatter():
+    x = np.random.rand(100)
+    y = np.random.rand(100)
+    plt.scatter(x, y, color='purple')
+    plt.title("Scatter Plot")
+    plt.xlabel("X-Axis")
+    plt.ylabel("Y-Axis")
+    plt.show()
 
-### 4. **Pie Chart for Emotion Proportions**
-   This plot shows the proportion of different emotions as a pie chart.
+# Function to plot pie chart
+def plot_pie_chart():
+    emotions = list(emotion_to_playlist.keys())
+    emotion_counts = np.random.randint(1, 100, size=len(emotions))  # Simulated counts
+    plt.pie(emotion_counts, labels=emotions, autopct='%1.1f%%', startangle=90, colors=sns.color_palette("Set3", len(emotions)))
+    plt.title("Emotion Distribution")
+    plt.show()
 
-   ```python
-   import matplotlib.pyplot as plt
-   import seaborn as sns
+# Function to plot barplot
+def plot_barplot():
+    emotions = list(emotion_to_playlist.keys())
+    emotion_counts = np.random.randint(1, 100, size=len(emotions))  # Simulated counts
+    sns.barplot(x=emotions, y=emotion_counts, palette='Blues_d')
+    plt.title("Emotion Count Barplot")
+    plt.xlabel("Emotions")
+    plt.ylabel("Count")
+    plt.xticks(rotation=45)
+    plt.show()
 
-   def plot_pie_chart(emotions, counts):
-       plt.pie(counts, labels=emotions, autopct='%1.1f%%', startangle=90, colors=sns.color_palette("Set3", len(emotions)))
-       plt.title("Emotion Proportions")
-       plt.show()
-   ```
+# Function to plot boxplot
+def plot_boxplot():
+    emotions = list(emotion_to_playlist.keys())
+    emotion_data = np.random.rand(len(emotions), 100)  # Simulated data
+    sns.boxplot(data=emotion_data.T, orient="h")
+    plt.title("Boxplot of Emotions")
+    plt.yticks(ticks=np.arange(len(emotions)), labels=emotions)
+    plt.show()
 
-### 5. **Scatter Plot**
-   A scatter plot visualizes the relationship between two variables, such as emotion scores and text features.
+# Function to plot histogram
+def plot_histogram():
+    data = np.random.rand(100)
+    plt.hist(data, bins=20, color='purple', edgecolor='black')
+    plt.title("Histogram")
+    plt.xlabel("Values")
+    plt.ylabel("Frequency")
+    plt.show()
 
-   ```python
-   import matplotlib.pyplot as plt
+# Function to plot pairplot
+def plot_pairplot():
+    emotions = list(emotion_to_playlist.keys())
+    emotion_data = np.random.rand(len(emotions), 100)  # Simulated data
+    df = pd.DataFrame(emotion_data.T, columns=emotions)
+    sns.pairplot(df)
+    plt.title("Pairplot of Emotions")
+    plt.show()
 
-   def plot_scatter(x, y):
-       plt.scatter(x, y, color='purple')
-       plt.title("Emotion vs Text Feature")
-       plt.xlabel("Emotion Score")
-       plt.ylabel("Text Feature")
-       plt.show()
-   ```
+# Function to detect emotion
+def start_emotion_detection():
+    cap = cv2.VideoCapture(0)
+    if not cap.isOpened():
+        messagebox.showerror("Error", "Unable to access the webcam.")
+        return
 
-### 6. **Regression Plot**
-   Regression plots are used to visualize the relationship between two continuous variables.
+    messagebox.showinfo("Info", "Look into the camera and express yourself freely!")
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            messagebox.showerror("Error", "Failed to capture frame.")
+            break
 
-   ```python
-   import seaborn as sns
-   import matplotlib.pyplot as plt
+        try:
+            # Detect emotion
+            result = DeepFace.analyze(frame, actions=['emotion'], enforce_detection=False)
+            emotion = result['dominant_emotion'] if isinstance(result, dict) else result[0]['dominant_emotion']
 
-   def plot_regression(x, y):
-       sns.regplot(x=x, y=y)
-       plt.title("Regression Plot")
-       plt.xlabel("Emotion Score")
-       plt.ylabel("Other Feature")
-       plt.show()
-   ```
+            # Display detected emotion
+            cap.release()
+            cv2.destroyAllWindows()
+            messagebox.showinfo("Your mood has been detected", f"Your emotion: {emotion}")
 
-### 7. **Main Block for Visualizing Data (Optional)**
-   You can include some simulated or real data inside a `__main__` block, which would allow you to test the functions directly.
+            # Open playlist based on detected emotion
+            playlist = emotion_to_playlist.get(emotion, None)
+            if playlist:
+                webbrowser.open(playlist)
+            else:
+                messagebox.showinfo("Info", "No playlist available for this emotion.")
+            break
+        except Exception as e:
+            messagebox.showerror("Error", f"Emotion detection failed: {e}")
+            break
 
-   ```python
-   if __name__ == "__main__":
-       emotions = ['happy', 'sad', 'angry', 'surprise', 'fear', 'neutral']
-       emotion_counts = [50, 30, 15, 10, 25, 20]  # Example simulated counts
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
-       # Example for confusion matrix and ROC curve plotting
-       y_true = np.random.choice(emotions, 100)  # Simulated ground truth
-       y_pred = np.random.choice(emotions, 100)  # Simulated predictions
-       y_true_bin = np.random.randint(0, 2, (100, len(emotions)))  # Simulated binary true labels
-       y_score = np.random.rand(100, len(emotions))  # Simulated prediction scores
+    cap.release()
+    cv2.destroyAllWindows()
 
-       plot_confusion_matrix(y_true, y_pred, emotions)
-       plot_roc_curve(y_true_bin, y_score, emotions)
-       plot_emotion_distribution(emotions, emotion_counts)
-       plot_pie_chart(emotions, emotion_counts)
-       plot_scatter(np.random.rand(100), np.random.rand(100))
-       plot_regression(np.random.rand(100), np.random.rand(100))
-   ```
+# GUI setup
+root = tk.Tk()
+root.title("Playlist for Your Mood")
+root.geometry("500x500")
+root.configure(bg="#F5F5F5")
 
+# GUI Components
+label = tk.Label(root, text="AURA TUNES: AI MOOD MELODIES", font=("Arial", 18), fg="indigo", bg="#F5F5F5")
+label.pack(pady=20)
+
+instruction_label = tk.Label(root, text="Click the button below to detect your mood\nand explore related tracks!", font=("Arial", 12))
+instruction_label.pack(pady=10)
+
+detect_button = tk.Button(root, text="DETECT MY MOOD!!", font=("Arial", 14), bg="purple", fg="white", command=start_emotion_detection)
+detect_button.pack(pady=20)
+
+quit_button = tk.Button(root, text="QUIT", font=("Arial", 14), bg="#FF1493", fg="white", command=root.quit)
+quit_button.pack(pady=10)
+
+# Automatically display the plots
+plot_confusion_matrix()
+plt.savefig('plot.jpg')  # Saves as plot.jpg
+
+plot_roc_curve()
+plot_regression()
+plot_scatter()
+plot_pie_chart()
+plot_barplot()
+plot_boxplot()
+plot_histogram()
+plot_pairplot()
