@@ -137,17 +137,18 @@ AuraTunes/
 ### GUI Screenshot
 
 1. **Emotion-Based Playlist Recommendation**:
-   - ![image](https://github.com/user-attachments/assets/68c855f5-f927-4b33-8909-583ce20d3345)
+   - ![image](https://github.com/user-attachments/assets/68c855f5-f927-4b33-8909-583ce20d3345) ![image](https://github.com/user-attachments/assets/1269dd0a-e349-44da-9d54-dc145a5ead71) ![image](https://github.com/user-attachments/assets/cee61b78-0e1b-4349-a7ce-1e5e6db472c9)
+
+
 
 
 
 ### Visualization Examples
 
-2. **Confusion Matrix**: ![Confusion Matrix](results/confusion_matrix.png)
+2. **Confusion Matrix**: ![image](https://github.com/user-attachments/assets/d23c8795-9ca5-4942-ab32-0bc8b3907a1a)
 
-3. **ROC Curve**: ![ROC Curve](results/roc_curve.png)
 
-4. **Barplot**: ![Barplot](results/barplot.png)
+3. **ROC Curve**: ![image](https://github.com/user-attachments/assets/81b79519-b4e0-4a41-b6c3-616e10166238)
 
 ---
 
