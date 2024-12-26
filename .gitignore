@@ -1,0 +1,69 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment files
+.env
+.venv/
+env/
+venv/
+ENV/
+
+# VSCode settings
+.vscode/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Python virtual environment
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Generated plots or outputs
+*.png
+*.jpg
+*.jpeg
+*.pdf
+
+# Dataset files
+*.csv
+*.xlsx
+*.json
+*.zip
+
+# Ignore specific dataset paths (update as per your project structure)
+path_to_dataset/
+
+# Ignore specific data artifacts
+artifacts/
+outputs/
+
+# IDE and editor specific files
+.idea/
+*.iml
+
+# Cached files
+*.cache
+
+# Avoid tracking large files accidentally
+*.tar.gz
+*.gz
+*.bz2
+*.xz
+
+# OS-specific files
+*.~lock.*
+*.bak~
