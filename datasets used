@@ -1,0 +1,23 @@
+GoEmotions Dataset
+
+Source: Kaggle - GoEmotions Dataset
+Description: This dataset contains 27 emotion labels for text, curated by Google AI.
+File Required: emotion_words.csv (included in the downloaded Kaggle dataset).
+Structure:
+  Columns in the dataset include:
+    text: The text for emotion analysis.
+    emotion: The labeled emotion for the given text.
+
+
+  
+DEAM Dataset
+
+Source: Kaggle - DEAM Dataset
+Description: DEAM (Database for Emotion Analysis using Music) is used to analyze emotions in music tracks.
+Files Required:
+annotations.csv: Contains emotion ratings for songs.
+Music files (.wav or .mp3).
+Structure:
+  Columns in annotations.csv include:
+  song_id: Unique ID for each song.
+  valence, arousal: Ratings for the song's emotional tone.
