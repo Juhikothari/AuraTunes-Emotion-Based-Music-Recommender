@@ -1,8 +1,13 @@
-deepface
-opencv-python
-tkinter
-pandas
-seaborn
-matplotlib
-scikit-learn
+# Requirements.txt for AuraTunes
+
+# Essential Libraries
 numpy
+pandas
+opencv-python
+matplotlib
+seaborn
+tkinterweb
+deepface
+
+# Additional Utilities
+scikit-learn
