@@ -120,6 +120,23 @@
        plot_regression(np.random.rand(100), np.random.rand(100))
    ```
 
-IMAGES:
+### Visualizations
+#### Confusion Matrix
+![Confusion Matrix]()
+
+#### ROC Curve
+![ROC Curve](C:\Users\HP\Downloads\roc curve.jpg)
+
+#### Barplot of Emotion Distribution
+![Emotion Distribution](images/emotion_distribution.png)
+
+#### Pie Chart of Emotion Distribution
+![Pie Chart](images/emotion_pie_chart.png)
+
+#### Scatter Plot
+![Scatter Plot](images/scatter_plot.png)
+
+#### Emotion Boxplot
+![Boxplot](images/emotion_boxplot.png)
 
 
