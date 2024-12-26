@@ -1,0 +1,8 @@
+deepface
+opencv-python
+tkinter
+pandas
+seaborn
+matplotlib
+scikit-learn
+numpy
