@@ -1,57 +1,33 @@
 import tkinter as tk
 from tkinter import messagebox
-import cv2
-from deepface import DeepFace
-import webbrowser
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, roc_curve, auc
-import numpy as np
+from visualization import plot_all_visualizations
+from mood_detection import start_emotion_detection
 
-# Load the GoEmotions dataset
-dataset = pd.read_csv(r"C:\Users\HP\Downloads\archive\tables\emotion_words.csv")
-print(dataset.head())  # Verify the data
+def open_visualization():
+    try:
+        plot_all_visualizations()
+    except Exception as e:
+        messagebox.showerror("Error", f"Visualization failed: {e}")
 
-# Define emotion to playlist mapping
-emotion_to_playlist = {
-    "happy": "https://open.spotify.com/playlist/5ACAHVlMPRrgnnZ8temmIh?si=LlvE8RZfS92RY-fUbqAX_g",
-    "sad": "https://open.spotify.com/playlist/0RkK2ZAXWD5HEmCJZ00i1G?si=Aa_r-9rwSZuxa1ji7z51Jw",
-    "angry": "https://open.spotify.com/playlist/5cwtgqs4L1fX8IKoQebfjJ?si=E4KoOSw1T3ShHyIhV4CabA",
-    "surprise": "https://open.spotify.com/playlist/7vatYrf39uVaZ8G2cVtEik?si=mxgDHP14RSCGMsNSLbwTNA",
-    "fear": "https://open.spotify.com/playlist/37i9dQZF1DXdpQPPZq3F7n?si=U-J5VJM6QbaWiDP9nExwnA",
-    "neutral": "https://open.spotify.com/playlist/4nqbYFYZOCospBb4miwHWy?si=2S0YqR26RJSRrmwKcvsjlQ"
-}
+# Create the main Tkinter window
+root = tk.Tk()
+root.title("Mood-Based Application")
+root.geometry("500x400")
+root.configure(bg="#F5F5F5")
 
-# Function to plot confusion matrix
-def plot_confusion_matrix():
-    emotions = list(emotion_to_playlist.keys())
-    y_true = np.random.choice(emotions, 100)  # Simulated ground truth
-    y_pred = np.random.choice(emotions, 100)  # Simulated predictions
-    cm = confusion_matrix(y_true, y_pred, labels=emotions)
-    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=emotions)
-    disp.plot(cmap=plt.cm.Blues)
-    plt.title("Confusion Matrix")
-    plt.show()
+# Add a title label
+label = tk.Label(root, text="Mood Analysis and Visualization", font=("Arial", 18), fg="indigo", bg="#F5F5F5")
+label.pack(pady=20)
 
-# Function to plot ROC curve
-def plot_roc_curve():
-    emotions = list(emotion_to_playlist.keys())
-    n_classes = len(emotions)
-    y_true = np.random.randint(0, 2, (100, n_classes))  # Simulated true labels
-    y_score = np.random.rand(100, n_classes)  # Simulated scores
+# Add buttons for functionalities
+detect_button = tk.Button(root, text="Detect My Mood", font=("Arial", 14), bg="purple", fg="white", command=start_emotion_detection)
+detect_button.pack(pady=20)
 
-    fpr = {}
-    tpr = {}
-    roc_auc = {}
+visualize_button = tk.Button(root, text="View Visualizations", font=("Arial", 14), bg="blue", fg="white", command=open_visualization)
+visualize_button.pack(pady=20)
 
-    for i, emotion in enumerate(emotions):
-        fpr[emotion], tpr[emotion], _ = roc_curve(y_true[:, i], y_score[:, i])
-        roc_auc[emotion] = auc(fpr[emotion], tpr[emotion])
+quit_button = tk.Button(root, text="Quit", font=("Arial", 14), bg="#FF1493", fg="white", command=root.quit)
+quit_button.pack(pady=10)
 
-    for emotion in emotions:
-        plt.plot(fpr[emotion], tpr[emotion], label=f'{emotion} (AUC = {roc_auc[emotion]:.2f})')
-
-    plt.plot([0, 1], [0, 1], 'k--', lw=2)
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate'
+# Run the application
+root.mainloop()
